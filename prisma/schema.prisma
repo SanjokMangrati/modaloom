@@ -17,16 +17,14 @@ model User {
 }
 
 model Avatar {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   userId       String
-  topType      String
-  facialHairType String?
-  clothType   String
-  clothColor  String
-  eyeType      String
-  eyebrowType  String
-  skinColor    String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  user         User     @relation("UserAvatars", fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  style        String    
+  seed         String    
+  options      Json      
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  user         User      @relation("UserAvatars", fields: [userId], references: [id], onDelete: Cascade)
 }
+

@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { Form } from '@/components/common/Form';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { registerFormSchema } from '@/types/zod-schemas';
+import { registerFormSchema } from '@/types/zod-schemas.types';
 import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { InputField } from '@/components/common/Input';
@@ -75,7 +75,7 @@ const Register = () => {
             />
             <Button type='submit' disabled={!methods.formState.isValid || methods.formState.isSubmitting} className='text-sm mt-4 px-8 hover:bg-accent'>Register</Button>
             <div className='text-sm font-medium text-muted-foreground mx-auto'>
-                <p>Already have an account? <Link href="/auth/register" className='underline active:text-blue-400 visited:text-blue-600'>Login here</Link></p>
+                <p>Already have an account? <Link href="/auth/login" className='underline active:text-blue-400 visited:text-blue-600'>Login here</Link></p>
             </div>
         </Form>
     );

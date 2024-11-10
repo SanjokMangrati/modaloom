@@ -1,9 +1,8 @@
 "use client"
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { Form } from '@/components/common/Form';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { loginFormSchema } from '@/types/zod-schemas';
+import { loginFormSchema } from '@/types/zod-schemas.types';
 import * as z from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { InputField } from '@/components/common/Input';
@@ -14,7 +13,6 @@ import Link from 'next/link';
 
 const Login = () => {
     const { toast } = useToast()
-    const router = useRouter();
 
     const methods = useForm<z.infer<typeof loginFormSchema>>({
         defaultValues: {
@@ -27,15 +25,13 @@ const Login = () => {
     })
 
     const onSubmit: SubmitHandler<z.infer<typeof loginFormSchema>> = async ({ email, password }) => {
-        const res = await signIn('credentials', { redirect: false, email, password });
+        const res = await signIn('credentials', { redirect: true, email, password });
         if (res?.error) {
             toast({
                 variant: 'destructive',
                 title: 'Invalid Credentials',
                 description: res?.error
             })
-        } else {
-            router.push('/');
         }
     }
 

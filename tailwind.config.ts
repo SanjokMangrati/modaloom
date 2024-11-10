@@ -9,6 +9,15 @@ export default {
 	],
 	theme: {
 		extend: {
+			container: {
+				center: true,
+				padding: "4rem",
+				screens: {
+					sm: "100%",
+					md: "768px",
+					lg: "1024px",
+				},
+			},
 			colors: {
 				foreground: "hsl(var(--foreground))",
 				background: "hsl(var(--background))",
@@ -23,6 +32,7 @@ export default {
 				accent: {
 					DEFAULT: "hsl(var(--accent))",
 					foreground: "hsl(var(--accent-foreground))",
+					hover: "hsl(var(--accent-hover))",
 				},
 				card: {
 					DEFAULT: "hsl(var(--card))",
@@ -75,6 +85,7 @@ export default {
 			},
 			backgroundImage: {
 				login: "url('/login.svg')",
+				svgBackground: "url('/svgBackground.png')",
 			},
 		},
 	},
