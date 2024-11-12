@@ -2,11 +2,12 @@ import AvatarComponent from '@/components/common/AvatarComponent';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar } from '@/types/avatar.types';
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { MdModeEdit } from "react-icons/md";
 import { MdFileDownload } from "react-icons/md";
 import { useRouter } from 'next/navigation';
 import { toPng } from 'html-to-image';
+import Loader from '@/components/common/Loader';
 interface IAvatarCardProps {
   avatar: Avatar;
 }
@@ -17,8 +18,12 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
 
   const avatarRef = useRef<HTMLDivElement>(null);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleDownload = async () => {
     if (!avatarRef.current) return;
+
+    setLoading(true);
 
     const svgClone = avatarRef.current.cloneNode(true) as HTMLElement;
     svgClone.style.width = "500px";
@@ -40,8 +45,10 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
       link.click();
     } catch (error) {
       console.error("Error generating PNG:", error);
+      setLoading(false);
     } finally {
       document.body.removeChild(svgClone);
+      setLoading(false);
     }
   };
 
@@ -56,7 +63,7 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
       </CardContent>
       <CardFooter className='flex items-center justify-between p-3'>
         <Button type='button' className='p-2 h-7 hover:bg-primary-hover' onClick={handleDownload}>
-          <MdFileDownload />
+          {loading ? <Loader size='xs' /> : <MdFileDownload />}
         </Button>
         <Button type='button' className='p-2 h-7 hover:bg-primary-hover' onClick={() => router.push(`/avatar/${avatar.id}`)}>
           <MdModeEdit />

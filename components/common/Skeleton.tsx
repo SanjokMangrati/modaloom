@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export enum SkeletonType {
     Avatars = "avatars",
-    Home = "home",
+    Preview = "preview",
 }
 
 interface SkeletonProps {
@@ -15,27 +15,12 @@ const SkeletonComponent: React.FC<SkeletonProps> = ({ type }) => {
     switch (type) {
         case SkeletonType.Avatars:
             return (
-                <Skeleton className="p-4 bg-foreground rounded-md">
-                    <div className="mb-4">
-                        <Skeleton className="h-4 w-3/4 mx-auto" />
-                    </div>
-                    <div className="flex justify-center mb-4">
-                        <Skeleton className="h-24 w-24 rounded-full" />
-                    </div>
-                    <div className="flex justify-between">
-                        <Skeleton className="h-7 w-7 rounded-md" />
-                        <Skeleton className="h-7 w-7 rounded-md" />
-                    </div>
-                </Skeleton>
+                <Skeleton className="w-[131px] h-[225px] bg-foreground rounded-md" />
             );
 
-        case SkeletonType.Home:
+        case SkeletonType.Preview:
             return (
-                <div className="p-4">
-                    <Skeleton className="h-8 w-full mb-2" />
-                    <Skeleton className="h-6 w-3/4 mb-2" />
-                    <Skeleton className="h-6 w-1/2" />
-                </div>
+                <Skeleton className='w-[344px] h-[344px] bg-foreground rounded-md' />
             );
 
         default:

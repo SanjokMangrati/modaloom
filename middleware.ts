@@ -7,6 +7,10 @@ const PROTECTED_ROUTES = ["/home", "/avatar"];
 export async function middleware(req: NextRequest) {
 	const { pathname } = req.nextUrl;
 
+	if (pathname === "/auth/error") {
+		return NextResponse.next();
+	}
+
 	if (
 		pathname.includes("/api/auth/session") ||
 		pathname.includes("/api/user")

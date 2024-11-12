@@ -1,7 +1,9 @@
 import { Form } from '@/components/common/Form';
+import Loader from '@/components/common/Loader';
 import SelectField from '@/components/common/SelectField';
 import { Button } from '@/components/ui/button';
 import { FormItem } from '@/components/ui/form';
+import { useToast } from '@/hooks/use-toast';
 import { updateAvatar } from '@/lib/api';
 import { AVAILABLE_AVATAR_PROPERTIES_DEFAULT_DATA, AvailableAvatarProperties, Avatar } from '@/types/avatar.types';
 import { useRouter } from 'next/navigation';
@@ -27,6 +29,7 @@ const AvatarEditor = ({ avatarConfig, setAvatarConfig }: IAvatarEditorProps) => 
     const [avatarProperties, setAvatarProperties] = useState<AvailableAvatarProperties>(AVAILABLE_AVATAR_PROPERTIES_DEFAULT_DATA);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
+    const { toast } = useToast();
 
     useEffect(() => {
         import('@/app/data/avatarProperties.json').then((data) => {
@@ -81,8 +84,13 @@ const AvatarEditor = ({ avatarConfig, setAvatarConfig }: IAvatarEditorProps) => 
 
         try {
             await updateAvatar({ ...avatarConfig, options: newOptions });
-        } catch (error) {
-            console.error(error);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast({
+                variant: 'destructive',
+                title: 'Error updating avatar',
+                description: error.message
+            })
         } finally {
             setLoading(false);
             router.push('/home');
@@ -193,7 +201,7 @@ const AvatarEditor = ({ avatarConfig, setAvatarConfig }: IAvatarEditorProps) => 
                     </div>
                 </div>
 
-                <Button className='hover:bg-primary-hover'>Save</Button>
+                <Button className='hover:bg-primary-hover'>{loading ? <Loader size='xs' /> : "Save"}</Button>
             </Form>
         </div>
     );

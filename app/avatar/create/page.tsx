@@ -1,7 +1,13 @@
 import React from 'react'
 import AvatarConsole from './AvatarConsole'
+import { Metadata } from 'next';
 
-const page = () => {
+export const metadata: Metadata = {
+    title: "Create Avatar | Modaloom",
+    description: "Custom Avatar Builder",
+};
+
+const Page = () => {
     return (
         <div className='container'>
             <AvatarConsole />
@@ -9,4 +15,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page;

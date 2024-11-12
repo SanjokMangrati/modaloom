@@ -1,6 +1,6 @@
 {
 	"properties": {
-		"backgroundColor": ["transparent", "a6a6a6"],
+		"backgroundColor": ["transparent", "a6a6a6", "000000", "388ec7", "38c75e"],
 		"backgroundType": ["solid"],
 		"eyebrows": [
 			"variant01",

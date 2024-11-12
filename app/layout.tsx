@@ -23,8 +23,9 @@ export default async function RootLayout({
   const headersList = await headers();
   const pathname = headersList.get("x-pathname") || "/";
   const isAuthRoute = pathname.startsWith("/auth/");
+  const isErrorRoute = pathname === "/auth/error";
 
-  if (isAuthRoute) {
+  if (isAuthRoute || isErrorRoute || pathname === '/') {
     return (
       <html lang="en">
         <body className="bg-background antialiased">

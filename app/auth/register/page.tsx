@@ -1,5 +1,11 @@
 import React from 'react'
 import Register from './Register';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: "Register | Modaloom",
+    description: "Custom Avatar Builder",
+};
 
 const Page = () => {
     return (

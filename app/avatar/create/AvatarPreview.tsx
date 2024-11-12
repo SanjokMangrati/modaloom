@@ -3,6 +3,8 @@ import { AvatarCreation } from '@/types/avatar.types';
 import React, { useEffect, useState } from 'react';
 import * as styles from "@dicebear/collection";
 import AvatarLivePreviewComponent from '@/components/common/AvatarLivePreviewComponent';
+import { useToast } from '@/hooks/use-toast';
+import SkeletonComponent, { SkeletonType } from '@/components/common/Skeleton';
 
 interface AvatarPreviewProps {
     avatarConfig: AvatarCreation;
@@ -11,6 +13,7 @@ interface AvatarPreviewProps {
 const AvatarPreview: React.FC<AvatarPreviewProps> = ({ avatarConfig }) => {
     const [svg, setSvg] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
+    const { toast } = useToast();
 
     useEffect(() => {
         const avatarPreviewGenerator = async () => {
@@ -23,8 +26,13 @@ const AvatarPreview: React.FC<AvatarPreviewProps> = ({ avatarConfig }) => {
                 });
                 setSvg(avatarSvg);
                 setLoading(false);
-            } catch (error) {
-                console.error('Error generating avatar:', error);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (error: any) {
+                toast({
+                    variant: 'destructive',
+                    title: 'Error generating avatar',
+                    description: error.message
+                })
                 setLoading(false);
             }
         };
@@ -33,14 +41,14 @@ const AvatarPreview: React.FC<AvatarPreviewProps> = ({ avatarConfig }) => {
 
     }, [avatarConfig]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <SkeletonComponent type={SkeletonType.Preview} />;
 
     return (
         <div className="flex flex-col justify-center items-start">
             <p className="bg-primary text-center p-1.5 text-sm font-semibold rounded-t-sm mb-[-8px]">
                 PREVIEW
             </p>
-            <div className="bg-primary flex justify-center w-fit h-fit p-3 rounded-b-md rounded-r-md">
+            <div className="bg-primary flex justify-center items-center w-fit h-fit p-3 rounded-b-md rounded-r-md">
                 <AvatarLivePreviewComponent svg={svg} />
             </div>
         </div>

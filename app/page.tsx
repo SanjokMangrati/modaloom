@@ -1,5 +1,9 @@
+import { Metadata } from "next";
 import Link from "next/link";
-
+export const metadata: Metadata = {
+  title: "Forbidden | Modaloom",
+  description: "Custom Avatar Builder",
+};
 export default function App() {
   return (
     <div className="text-md font-medium p-4">

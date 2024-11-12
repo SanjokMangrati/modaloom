@@ -38,7 +38,7 @@ const Register = () => {
 
         const result = await response.json();
 
-        if (!result.user.id) {
+        if (!result.user?.id) {
             toast({
                 variant: 'destructive',
                 title: 'Registration Failed.'

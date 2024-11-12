@@ -6,7 +6,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 const BackButton = ({ link }: { link: string; }) => {
     return (
         <Link href={link}>
-            <Button type='button' className='bg-accent hover:bg-primary-hover h-8'>
+            <Button type='button' className='bg-primary hover:bg-primary-hover h-8'>
                 <IoMdArrowRoundBack />
             </Button>
         </Link>
