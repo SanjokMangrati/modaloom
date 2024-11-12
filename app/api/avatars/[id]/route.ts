@@ -1,30 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAvatar, Style } from "@dicebear/core";
 import * as styles from "@dicebear/collection";
 import prisma from "@/lib/prisma";
-import { createApiError } from "@/lib/utils";
+import { createApiError, generateAvatar } from "@/lib/utils";
 
-interface AvatarConfig {
-	style: Style<any>;
-	seed: string;
-	options?: Record<string, any>;
-}
-
-async function generateAvatar({ style, seed, options }: AvatarConfig) {
+export async function GET(
+	request: NextRequest,
+	{ params }: { params: { id: string } }
+) {
 	try {
-		const avatar = createAvatar(style, {
-			seed,
-			...(options && typeof options === "object" ? options : {}),
-		});
-		return avatar.toString();
-	} catch (error) {
-		throw createApiError("Failed to generate avatar SVG", 500);
-	}
-}
-
-export async function GET(request: NextRequest) {
-	try {
-		const id = request.nextUrl.searchParams.get("userId");
+		const { id } = await params;
 
 		if (!id)
 			return NextResponse.json(createApiError("Avatar ID not provided", 400));
@@ -51,6 +35,40 @@ export async function GET(request: NextRequest) {
 		console.error(error);
 		return NextResponse.json(
 			createApiError("An error occurred while fetching the avatar", 500)
+		);
+	}
+}
+export async function PUT(request: NextRequest) {
+	try {
+		const { avatarConfig } = await request.json();
+
+		const id = avatarConfig.id;
+
+		if (!id)
+			return NextResponse.json(createApiError("Avatar ID not provided", 400));
+
+		if (!avatarConfig || !avatarConfig.options) {
+			return NextResponse.json(createApiError("Invalid avatar data", 400));
+		}
+
+		await prisma.avatar.update({
+			where: { id },
+			data: {
+				id: avatarConfig.id,
+				userId: avatarConfig.userId,
+				style: avatarConfig.style,
+				seed: avatarConfig.seed,
+				options: avatarConfig.options,
+			},
+		});
+
+		return NextResponse.json({
+			message: "Avatar updated successfully",
+		});
+	} catch (error) {
+		console.error(error);
+		return NextResponse.json(
+			createApiError("An error occurred while updating the avatar", 500)
 		);
 	}
 }

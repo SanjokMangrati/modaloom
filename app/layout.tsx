@@ -8,6 +8,7 @@ import { AvatarProvider } from "@/context/avatar.context";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { headers } from "next/headers";
+import Navbar from "@/components/common/Navbar";
 
 export const metadata: Metadata = {
   title: "Modaloom",
@@ -47,7 +48,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className="bg-background antialiased">
-        <nav className="bg-white h-14">Navbar</nav>
+        <Navbar />
         <main>
           <UserProvider initialUser={user}>
             <AvatarProvider initialAvatars={avatars}>

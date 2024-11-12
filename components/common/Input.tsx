@@ -47,7 +47,7 @@ export const InputField: React.FC<IProps> = ({
                         <div className="flex flex-row items-center gap-2">
                             {icon}
                             <Input
-                                className="border-1[px] border-foreground rounded-md text-sm font-medium"
+                                className="border-1[px] border-background rounded-md text-sm font-medium bg-foreground caret-black text-background"
                                 placeholder={placeholder ?? capitalize(name)}
                                 type={type}
                                 disabled={disabled}

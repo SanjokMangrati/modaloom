@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import * as styles from "@dicebear/collection";
 import prisma from "@/lib/prisma";
 import { createApiError, generateAvatar } from "@/lib/utils";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET(request: NextRequest) {
 	try {
@@ -43,6 +45,44 @@ export async function GET(request: NextRequest) {
 		console.error("Error fetching avatars:", error);
 		return NextResponse.json(
 			createApiError("An error occurred while fetching avatars", 500)
+		);
+	}
+}
+
+export async function POST(request: NextRequest) {
+	const session = await getServerSession(authOptions);
+
+	if (!session || !session.user) {
+		return NextResponse.json(createApiError("User not authenticated.", 401));
+	}
+
+	try {
+		const avatarData = await request.json();
+
+		if (
+			!avatarData.name ||
+			!avatarData.style ||
+			!avatarData.seed ||
+			!avatarData.options
+		) {
+			return NextResponse.json(createApiError("Missing required fields", 400));
+		}
+
+		const newAvatar = await prisma.avatar.create({
+			data: {
+				user: { connect: { id: session.user.id } },
+				name: avatarData.name,
+				style: avatarData.style,
+				seed: avatarData.seed,
+				options: avatarData.options || {},
+			},
+		});
+
+		return NextResponse.json({ avatar: newAvatar }, { status: 201 });
+	} catch (error) {
+		console.error(error);
+		return NextResponse.json(
+			createApiError("An error occurred while creating the avatar", 500)
 		);
 	}
 }

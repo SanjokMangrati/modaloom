@@ -2,12 +2,11 @@ import AvatarComponent from '@/components/common/AvatarComponent';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar } from '@/types/avatar.types';
-import React from 'react'
+import React, { useRef } from 'react'
 import { MdModeEdit } from "react-icons/md";
 import { MdFileDownload } from "react-icons/md";
 import { useRouter } from 'next/navigation';
-
-
+import { toPng } from 'html-to-image';
 interface IAvatarCardProps {
   avatar: Avatar;
 }
@@ -16,16 +15,47 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
 
   const router = useRouter();
 
+  const avatarRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = async () => {
+    if (!avatarRef.current) return;
+
+    const svgClone = avatarRef.current.cloneNode(true) as HTMLElement;
+    svgClone.style.width = "500px";
+    svgClone.style.height = "500px";
+
+    document.body.appendChild(svgClone);
+
+    try {
+      const pngDataUrl = await toPng(svgClone, {
+        pixelRatio: 2,
+        filter: (node) => {
+          return !(node instanceof HTMLStyleElement && node.sheet && node.sheet.cssRules);
+        },
+      });
+
+      const link = document.createElement('a');
+      link.href = pngDataUrl;
+      link.download = `${avatar.name}.png`;
+      link.click();
+    } catch (error) {
+      console.error("Error generating PNG:", error);
+    } finally {
+      document.body.removeChild(svgClone);
+    }
+  };
+
+
   return (
     <Card className='shadow-sm shadow-foreground bg-foreground border-[1px] border-gray-300'>
       <CardHeader className='p-3'>
         <CardTitle className='font-medium w-full text-sm text-foreground bg-primary px-1.5 text-center rounded-sm'>{avatar.name}</CardTitle>
       </CardHeader>
       <CardContent className='p-2'>
-        <AvatarComponent avatar={avatar} />
+        <AvatarComponent avatar={avatar} avatarRef={avatarRef} />
       </CardContent>
       <CardFooter className='flex items-center justify-between p-3'>
-        <Button type='button' className='p-2 h-7 hover:bg-accent-hover'>
+        <Button type='button' className='p-2 h-7 hover:bg-accent-hover' onClick={handleDownload}>
           <MdFileDownload />
         </Button>
         <Button type='button' className='p-2 h-7 hover:bg-accent-hover' onClick={() => router.push(`/avatar/${avatar.id}`)}>

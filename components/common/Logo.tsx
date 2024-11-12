@@ -1,11 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 const Logo = () => {
     return (
-        <div className='font-heading text-3xl font-medium text-accent'>
-            Modaloom
-        </div>
-    )
-}
+        <img src="/logo.svg" alt="Logo" className="w-32 h-fit" />
+    );
+};
 
-export default Logo
+export default Logo;
