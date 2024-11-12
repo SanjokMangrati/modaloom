@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { createApiError } from "@/lib/utils";
 import { authOptions } from "../auth/[...nextauth]/route";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
 	try {
 		const session = await getServerSession(authOptions);
 

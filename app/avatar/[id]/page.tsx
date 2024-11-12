@@ -1,11 +1,10 @@
 import React from 'react'
 import { fetchAvatarById } from '@/lib/api'
-import { PageProps } from '@/.next/types/app/avatar/[id]/page'
 import AvatarConsole from './AvatarConsole';
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: { params: { id: string } }) {
 
-    const { id } = await params;
+    const { id } = params;
 
     const initialAvatarConfigData = await fetchAvatarById(id);
 

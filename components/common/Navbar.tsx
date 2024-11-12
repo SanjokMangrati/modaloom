@@ -11,7 +11,7 @@ const Navbar = () => {
                 <Logo />
                 <div className='flex items-center gap-4'>
                     <Link href={'/avatar/create'}>
-                        <Button type='button' className='h-8 hover:bg-accent-hover'>Create New</Button>
+                        <Button type='button' className='h-8 hover:bg-primary-hover'>Create New</Button>
                     </Link>
                     <Logout />
                 </div>

@@ -203,7 +203,7 @@ const AvatarEditor = ({ avatarConfig, setAvatarConfig }: IAvatarEditorProps) => 
                     </div>
                 </div>
 
-                <Button className='hover:bg-accent-hover'>Create</Button>
+                <Button className='hover:bg-primary-hover'>Create</Button>
             </Form>
         </div>
     );

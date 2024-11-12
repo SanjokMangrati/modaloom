@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { useFormContext } from "react-hook-form";
-import { capitalize } from "@/lib/utils"
+import { capitalize, cn } from "@/lib/utils"
 import { ReactElement } from "react";
 
 interface IProps {
@@ -20,6 +20,7 @@ interface IProps {
     disabled?: boolean;
     required?: boolean;
     icon?: ReactElement;
+    className?: string;
 }
 
 export const InputField: React.FC<IProps> = ({
@@ -30,7 +31,8 @@ export const InputField: React.FC<IProps> = ({
     fieldDescription,
     disabled = false,
     required = false,
-    icon
+    icon,
+    className
 }) => {
     const form = useFormContext();
 
@@ -41,7 +43,7 @@ export const InputField: React.FC<IProps> = ({
             render={({ field }) => (
                 <FormItem>
                     <div>
-                        <FormLabel className="font-medium text-md">{label ?? capitalize(name)}</FormLabel>
+                        <FormLabel className={cn("font-medium text-md", className)}>{label ?? capitalize(name)}</FormLabel>
                     </div>
                     <FormControl>
                         <div className="flex flex-row items-center gap-2">

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { FaPlus } from 'react-icons/fa6'
 import { useAvatarContext } from '@/context/avatar.context';
 import SkeletonComponent, { SkeletonType } from '@/components/common/Skeleton';
+import Link from 'next/link';
 
 const HomePage = () => {
 
@@ -11,11 +12,13 @@ const HomePage = () => {
 
     if (!(avatars?.length > 0)) {
         return (
-            <div className='flex flex-col gap-4 min-h-screen items-center justify-center text-foreground'>
+            <div className='flex flex-col gap-4 h-96 items-center justify-center text-foreground'>
                 <p className='text-lg'>Woah! Looks empty</p>
-                <Button type='button' className='flex gap-2 items-center hover:bg-accent'>
-                    <FaPlus /> Create New
-                </Button>
+                <Link href="/avatar/create">
+                    <Button type='button' className='flex gap-2 items-center hover:bg-primary-hover'>
+                        <FaPlus /> Create New
+                    </Button>
+                </Link>
             </div>
         )
     }

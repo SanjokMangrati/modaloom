@@ -24,6 +24,7 @@ export default {
 				primary: {
 					DEFAULT: "hsl(var(--primary))",
 					foreground: "hsl(var(--primary-foreground))",
+					hover: "hsl(var(--primary-hover))",
 				},
 				secondary: {
 					DEFAULT: "hsl(var(--secondary))",
@@ -32,7 +33,6 @@ export default {
 				accent: {
 					DEFAULT: "hsl(var(--accent))",
 					foreground: "hsl(var(--accent-foreground))",
-					hover: "hsl(var(--accent-hover))",
 				},
 				card: {
 					DEFAULT: "hsl(var(--card))",

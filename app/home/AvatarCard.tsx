@@ -55,10 +55,10 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
         <AvatarComponent avatar={avatar} avatarRef={avatarRef} />
       </CardContent>
       <CardFooter className='flex items-center justify-between p-3'>
-        <Button type='button' className='p-2 h-7 hover:bg-accent-hover' onClick={handleDownload}>
+        <Button type='button' className='p-2 h-7 hover:bg-primary-hover' onClick={handleDownload}>
           <MdFileDownload />
         </Button>
-        <Button type='button' className='p-2 h-7 hover:bg-accent-hover' onClick={() => router.push(`/avatar/${avatar.id}`)}>
+        <Button type='button' className='p-2 h-7 hover:bg-primary-hover' onClick={() => router.push(`/avatar/${avatar.id}`)}>
           <MdModeEdit />
         </Button>
       </CardFooter>

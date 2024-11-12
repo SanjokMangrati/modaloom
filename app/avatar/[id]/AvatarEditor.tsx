@@ -80,7 +80,7 @@ const AvatarEditor = ({ avatarConfig, setAvatarConfig }: IAvatarEditorProps) => 
         setLoading(true);
 
         try {
-            const result = await updateAvatar({ ...avatarConfig, options: newOptions });
+            await updateAvatar({ ...avatarConfig, options: newOptions });
         } catch (error) {
             console.error(error);
         } finally {
@@ -193,7 +193,7 @@ const AvatarEditor = ({ avatarConfig, setAvatarConfig }: IAvatarEditorProps) => 
                     </div>
                 </div>
 
-                <Button className='hover:bg-accent-hover'>Save</Button>
+                <Button className='hover:bg-primary-hover'>Save</Button>
             </Form>
         </div>
     );

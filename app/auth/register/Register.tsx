@@ -53,7 +53,7 @@ const Register = () => {
 
     return (
         <Form
-            className='flex flex-col gap-4 px-4 py-5 sm:w-[450px] w-fit bg-background md:gap-6 md:px-6 md:py-8 rounded-md'
+            className='flex flex-col gap-4 px-4 py-5 sm:w-[450px] w-fit bg-foreground md:gap-6 md:px-6 md:py-8 rounded-md'
             methods={methods}
             onSubmit={methods.handleSubmit(onSubmit)}
         >
@@ -62,18 +62,23 @@ const Register = () => {
                 type='email'
                 label='Email'
                 placeholder='user@example.com'
+                className='text-background'
             />
             <InputField
                 name='password'
                 type='password'
                 label='Password'
+                className='text-background'
+
             />
             <InputField
                 name='confirmPassword'
                 type='password'
                 label='Confirm Password'
+                className='text-background'
+
             />
-            <Button type='submit' disabled={!methods.formState.isValid || methods.formState.isSubmitting} className='text-sm mt-4 px-8 hover:bg-accent'>Register</Button>
+            <Button type='submit' disabled={!methods.formState.isValid || methods.formState.isSubmitting} className='text-sm mt-4 px-8 hover:bg-primary-hover'>Register</Button>
             <div className='text-sm font-medium text-muted-foreground mx-auto'>
                 <p>Already have an account? <Link href="/auth/login" className='underline active:text-blue-400 visited:text-blue-600'>Login here</Link></p>
             </div>
