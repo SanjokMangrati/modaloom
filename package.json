@@ -5,9 +5,15 @@
 	"author": "Sanjok Mangrati",
 	"scripts": {
 		"dev": "next dev",
-		"build": "next build",
+		"build": "prisma generate && next build",
 		"start": "next start",
+<<<<<<< Updated upstream
 		"lint": "next lint"
+=======
+		"lint": "next lint",
+		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+		"postinstall": "prisma generate"
+>>>>>>> Stashed changes
 	},
 	"dependencies": {
 		"@prisma/client": "^5.22.0",
