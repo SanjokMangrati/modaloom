@@ -1,7 +1,7 @@
-'use client'
+"use client";
 import { useState, useEffect, useCallback } from "react";
 import debounce from "lodash.debounce";
-import { fetchAvatarsByName, fetchAvatarsByUserId, } from "@/lib/api"; // add fetchAllAvatars to get all avatars
+import { fetchAvatarsByName, fetchAvatarsByUserId } from "@/lib/api"; // add fetchAllAvatars to get all avatars
 import { Input } from "../ui/input";
 import { CiSearch } from "react-icons/ci";
 import { BsPersonBoundingBox } from "react-icons/bs";
@@ -13,7 +13,7 @@ const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Avatar[]>([]);
 
-  const { loading, setAvatars, setError, setLoading } = useAvatarContext();
+  const { setAvatars, setError, setLoading } = useAvatarContext();
   const { user } = useUser();
 
   const fetchSuggestions = useCallback(
@@ -31,12 +31,13 @@ const SearchBar = () => {
           setSuggestions([]);
         }
       } catch (error) {
+        console.log(error);
         setError("Error fetching suggestions");
       } finally {
         setLoading(false);
       }
     }, 300),
-    [setAvatars]
+    [setAvatars],
   );
 
   useEffect(() => {
@@ -63,7 +64,10 @@ const SearchBar = () => {
           {suggestions.map((avatar) => (
             <div
               key={avatar.id}
-              onClick={() => { setAvatars([avatar]); setSuggestions([]) }}
+              onClick={() => {
+                setAvatars([avatar]);
+                setSuggestions([]);
+              }}
               className="text-sm font-medium p-1 flex items-center gap-2 mt-1 rounded-sm hover:bg-primary hover:text-foreground"
             >
               <BsPersonBoundingBox className="text-md" />

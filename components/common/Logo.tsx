@@ -1,10 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const Logo = () => {
-    return (
-        //@eslint-ignore @next/next/no-img-element
-        <img src="/logo.svg" alt="Logo" className="w-32 h-fit" />
-    );
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src="/logo.svg" alt="Logo" className="w-32 h-fit" />;
 };
 
 export default Logo;
