@@ -99,7 +99,7 @@ export const authOptions: NextAuthOptions = {
 		},
 		async redirect({ url, baseUrl }) {
 			console.log("Redirect callback:", { url, baseUrl });
-			return url.startsWith(baseUrl) ? url : `${baseUrl}/home`;
+			return `${baseUrl}/home`;
 		},
 	},
 	pages: {
