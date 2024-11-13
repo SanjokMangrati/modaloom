@@ -26,14 +26,15 @@ export async function middleware(req: NextRequest) {
 	}
 
 	console.log("Its starting here");
-	console.log(req.cookies);
-	console.log(token);
-	console.log(pathname);
+	console.log("Cookies", req.cookies);
+	console.log("token", token);
+	console.log("pathname", pathname);
 	const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
-	const isProtectedRoute = PROTECTED_ROUTES.some(
-		(route) => pathname.startsWith(route) || pathname.includes(`${route}/`)
-	);
-	console.log(isProtectedRoute);
+	const isProtectedRoute = PROTECTED_ROUTES.some((route) => {
+		console.log("route", route);
+		return pathname.startsWith(route) || pathname.includes(`${route}/`);
+	});
+	console.log("isProtectedRoute", isProtectedRoute);
 
 	if (isProtectedRoute && !token) {
 		console.log(token, "Its redirecting to auth");
