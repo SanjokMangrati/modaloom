@@ -49,6 +49,8 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
         },
       });
 
+      console.log("png url",pngDataUrl);
+
       const link = document.createElement("a");
       link.href = pngDataUrl;
       link.download = `${avatar.name}.png`;
