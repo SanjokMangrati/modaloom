@@ -41,11 +41,11 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
   }
 
   document.body.appendChild(svgClone);
-    svgClone.style.position = 'fixed';
-    svgClone.style.left = '10px';    
-    svgClone.style.top = '10px';  
-    svgClone.style.zIndex = '9999';
-    svgClone.style.background = 'white';
+  svgClone.style.opacity = '0';
+  svgClone.style.position = 'fixed';
+  svgClone.style.pointerEvents = 'none';
+  svgClone.style.top = '0';
+  svgClone.style.left = '0';;
 
 console.log("Original SVG:", avatarRef.current.outerHTML);
   try {
