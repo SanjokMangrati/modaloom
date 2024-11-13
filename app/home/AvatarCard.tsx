@@ -44,6 +44,8 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
   svgClone.style.position = 'absolute';
   svgClone.style.left = '-9999px';
   svgClone.style.top = '-9999px';
+
+console.log("Original SVG:", avatarRef.current.outerHTML);
   try {
     const images = Array.from(svgClone.querySelectorAll('image'));
     await Promise.all(
@@ -63,14 +65,16 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
     );
 
     const pngDataUrl = await toPng(svgClone, {
-      quality: 1.0,
       pixelRatio: 2,
       filter: (node) => {
         return !(node instanceof HTMLStyleElement);
       },
-      skipAutoScale: true,
-      cacheBust: true
+      width: 500,
+      height: 500
     });
+
+    console.log("PNG Data URL starts with:", pngDataUrl.substring(0, 100));
+
 
     const link = document.createElement('a');
     link.download = `${avatar.name || 'avatar'}.png`;
