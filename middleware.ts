@@ -23,10 +23,13 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
+	console.log(token);
+	console.log(pathname);
 	const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
 	const isProtectedRoute = PROTECTED_ROUTES.some(
 		(route) => pathname.startsWith(route) || pathname.includes(`${route}/`)
 	);
+	console.log(isProtectedRoute);
 
 	if (isProtectedRoute && !token) {
 		return NextResponse.redirect(new URL("/auth/login", req.url));
