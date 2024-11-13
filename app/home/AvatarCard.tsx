@@ -41,9 +41,12 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
   }
 
   document.body.appendChild(svgClone);
+  svgClone.style.position = 'fixed';
+  svgClone.style.left = '10px';
+  svgClone.style.top = '10px';
+  svgClone.style.zIndex = '9999';
   svgClone.style.height = "500px";
   svgClone.style.display = "none";
-
 
 console.log("Original SVG:", avatarRef.current.outerHTML);
   try {
