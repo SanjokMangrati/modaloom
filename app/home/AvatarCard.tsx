@@ -26,14 +26,12 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleDownload = async () => {
-  const avatarRef = useRef<HTMLElement | null>(null);
-
-  if (!avatarRef.current) {
-    console.error('Avatar reference is null');
-    return;
-  }
-
-  const svgClone = avatarRef.current.cloneNode(true) as HTMLElement;
+    if (!avatarRef.current) {
+      console.error('Avatar reference is null');
+      return;
+    }
+    setLoading(true);
+    const svgClone = avatarRef.current.cloneNode(true) as HTMLElement;
   
   svgClone.setAttribute('width', '500');
   svgClone.setAttribute('height', '500');
@@ -46,18 +44,22 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
   svgClone.style.position = 'absolute';
   svgClone.style.left = '-9999px';
   svgClone.style.top = '-9999px';
-
   try {
+    const images = Array.from(svgClone.querySelectorAll('image'));
     await Promise.all(
-      Array.from(svgClone.querySelectorAll('image'))
-        .map(img => new Promise((resolve, reject) => {
-          if (img.complete) {
-            resolve(null);
-          } else {
-            img.onload = () => resolve(null);
-            img.onerror = reject;
-          }
-        }))
+      images.map(img => new Promise<void>((resolve, reject) => {
+        const loader = new Image();
+        const href = img.getAttribute('href') || img.getAttribute('xlink:href');
+        
+        if (!href) {
+          resolve();
+          return;
+        }
+
+        loader.onload = () => resolve();
+        loader.onerror = () => reject(new Error(`Failed to load image: ${href}`));
+        loader.src = href;
+      }))
     );
 
     const pngDataUrl = await toPng(svgClone, {
@@ -86,7 +88,7 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
     }
     setLoading(false);
   }
-};
+  };
 
   return (
     <Card className="shadow-sm shadow-foreground bg-foreground border-[1px] border-gray-300">
