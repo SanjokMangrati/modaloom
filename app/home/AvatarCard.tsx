@@ -26,74 +26,40 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleDownload = async () => {
-    if (!avatarRef.current) {
-      console.error('Avatar reference is null');
-      return;
-    }
+    if (!avatarRef.current) return;
+
     setLoading(true);
+
     const svgClone = avatarRef.current.cloneNode(true) as HTMLElement;
-  
-  svgClone.setAttribute('width', '500');
-  svgClone.setAttribute('height', '500');
-  
-  if (svgClone instanceof SVGElement && !svgClone.getAttribute('viewBox')) {
-    svgClone.setAttribute('viewBox', '0 0 500 500');
-  }
+    svgClone.style.width = "500px";
+    svgClone.style.height = "500px";
 
-  document.body.appendChild(svgClone);
-  svgClone.style.position = 'fixed';
-  svgClone.style.left = '10px';
-  svgClone.style.top = '10px';
-  svgClone.style.zIndex = '9999';
-  svgClone.style.height = "500px";
+    document.body.appendChild(svgClone);
+    svgClone.style.display = "none";
 
-console.log("Original SVG:", avatarRef.current.outerHTML);
-  try {
-    const images = Array.from(svgClone.querySelectorAll('image'));
-    await Promise.all(
-      images.map(img => new Promise<void>((resolve, reject) => {
-        const loader = new Image();
-        const href = img.getAttribute('href') || img.getAttribute('xlink:href');
-        
-        if (!href) {
-          resolve();
-          return;
-        }
+    try {
+      const pngDataUrl = await toPng(svgClone, {
+        pixelRatio: 2,
+        filter: (node) => {
+          return !(
+            node instanceof HTMLStyleElement &&
+            node.sheet &&
+            node.sheet.cssRules
+          );
+        },
+      });
 
-        loader.onload = () => resolve();
-        loader.onerror = () => reject(new Error(`Failed to load image: ${href}`));
-        loader.src = href;
-      }))
-    );
-
-    const pngDataUrl = await toPng(svgClone, {
-      pixelRatio: 2,
-      filter: (node) => {
-        return !(node instanceof HTMLStyleElement);
-      },
-      width: 500,
-      height: 500
-    });
-
-    console.log("PNG Data URL starts with:", pngDataUrl.substring(0, 100));
-
-
-    const link = document.createElement('a');
-    link.download = `${avatar.name || 'avatar'}.png`;
-    link.href = pngDataUrl;
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-  } catch (err) {
-    console.error('Error generating PNG:', err);
-  } finally {
-    if (svgClone.parentNode) {
-      svgClone.parentNode.removeChild(svgClone);
+      const link = document.createElement("a");
+      link.href = pngDataUrl;
+      link.download = `${avatar.name}.png`;
+      link.click();
+    } catch (error) {
+      console.error("Error generating PNG:", error);
+      setLoading(false);
+    } finally {
+      document.body.removeChild(svgClone);
+      setLoading(false);
     }
-    setLoading(false);
-  }
   };
 
   return (
