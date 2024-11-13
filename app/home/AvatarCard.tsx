@@ -46,7 +46,6 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
   svgClone.style.top = '10px';
   svgClone.style.zIndex = '9999';
   svgClone.style.height = "500px";
-  svgClone.style.visibility = "hidden";
 
 console.log("Original SVG:", avatarRef.current.outerHTML);
   try {
