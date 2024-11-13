@@ -27,16 +27,11 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
 
   const handleDownload = async () => {
   const avatarRef = useRef<HTMLElement | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   if (!avatarRef.current) {
     console.error('Avatar reference is null');
     return;
   }
-
-  setLoading(true);
-  setError(null);
 
   const svgClone = avatarRef.current.cloneNode(true) as HTMLElement;
   
@@ -85,7 +80,6 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
 
   } catch (err) {
     console.error('Error generating PNG:', err);
-    setError(err instanceof Error ? err.message : 'Failed to generate PNG');
   } finally {
     if (svgClone.parentNode) {
       svgClone.parentNode.removeChild(svgClone);
