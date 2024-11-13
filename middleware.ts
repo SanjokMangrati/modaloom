@@ -19,6 +19,8 @@ export async function middleware(req: NextRequest) {
 		secret: process.env.NEXTAUTH_SECRET,
 	});
 
+	console.log("next secret",process.env.NEXTAUTH_SECRET );
+
 	if (pathname === "/") {
 		return NextResponse.redirect(
 			new URL(token ? "/home" : "/auth/login", req.url)
