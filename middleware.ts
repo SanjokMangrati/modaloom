@@ -23,6 +23,7 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
+	console.log("Its starting here");
 	console.log(token);
 	console.log(pathname);
 	const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
@@ -32,6 +33,7 @@ export async function middleware(req: NextRequest) {
 	console.log(isProtectedRoute);
 
 	if (isProtectedRoute && !token) {
+		console.log(token, "Its redirecting to auth");
 		return NextResponse.redirect(new URL("/auth/login", req.url));
 	}
 
