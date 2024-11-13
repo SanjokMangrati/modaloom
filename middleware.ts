@@ -8,8 +8,6 @@ const PROTECTED_ROUTES = ["/home", "/avatar"];
 const PUBLIC_ROUTES = ["/api/", "/auth/error"];
 
 export async function middleware(req: NextRequest) {
-	const session = await getServerSession(authOptions);
-
 	const { pathname } = req.nextUrl;
 
 	if (PUBLIC_ROUTES.some((route) => pathname.includes(route))) {
@@ -28,11 +26,7 @@ export async function middleware(req: NextRequest) {
 	}
 
 	console.log("Its starting here");
-	if (session) {
-		console.log("Session exists:", session);
-	} else {
-		console.log("No session found");
-	}
+	console.log(req.cookies);
 	console.log(token);
 	console.log(pathname);
 	const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
