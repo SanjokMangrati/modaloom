@@ -26,43 +26,73 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleDownload = async () => {
-    if (!avatarRef.current) return;
+  const avatarRef = useRef<HTMLElement | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    setLoading(true);
+  if (!avatarRef.current) {
+    console.error('Avatar reference is null');
+    return;
+  }
 
-    const svgClone = avatarRef.current.cloneNode(true) as HTMLElement;
-    svgClone.style.width = "500px";
-    svgClone.style.height = "500px";
+  setLoading(true);
+  setError(null);
 
-    document.body.appendChild(svgClone);
-    svgClone.style.display = "none";
+  const svgClone = avatarRef.current.cloneNode(true) as HTMLElement;
+  
+  svgClone.setAttribute('width', '500');
+  svgClone.setAttribute('height', '500');
+  
+  if (svgClone instanceof SVGElement && !svgClone.getAttribute('viewBox')) {
+    svgClone.setAttribute('viewBox', '0 0 500 500');
+  }
 
-    try {
-      const pngDataUrl = await toPng(svgClone, {
-        pixelRatio: 2,
-        filter: (node) => {
-          return !(
-            node instanceof HTMLStyleElement &&
-            node.sheet &&
-            node.sheet.cssRules
-          );
-        },
-      });
+  document.body.appendChild(svgClone);
+  svgClone.style.position = 'absolute';
+  svgClone.style.left = '-9999px';
+  svgClone.style.top = '-9999px';
 
-      console.log("png url",pngDataUrl);
+  try {
+    await Promise.all(
+      Array.from(svgClone.querySelectorAll('image'))
+        .map(img => new Promise((resolve, reject) => {
+          if (img.complete) {
+            resolve(null);
+          } else {
+            img.onload = () => resolve(null);
+            img.onerror = reject;
+          }
+        }))
+    );
 
-      const link = document.createElement("a");
-      link.href = pngDataUrl;
-      link.download = `${avatar.name}.png`;
-      link.click();
-    } catch (error) {
-      console.error("Error generating PNG:", error);
-      setLoading(false);
-    } finally {
-      document.body.removeChild(svgClone);
-      setLoading(false);
+    const pngDataUrl = await toPng(svgClone, {
+      quality: 1.0,
+      pixelRatio: 2,
+      filter: (node) => {
+        return !(node instanceof HTMLStyleElement);
+      },
+      skipAutoScale: true,
+      cacheBust: true
+    });
+
+    const link = document.createElement('a');
+    link.download = `${avatar.name || 'avatar'}.png`;
+    link.href = pngDataUrl;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+  } catch (err) {
+    console.error('Error generating PNG:', err);
+    setError(err instanceof Error ? err.message : 'Failed to generate PNG');
+  } finally {
+    if (svgClone.parentNode) {
+      svgClone.parentNode.removeChild(svgClone);
     }
-  };
+    setLoading(false);
+  }
+};
 
   return (
     <Card className="shadow-sm shadow-foreground bg-foreground border-[1px] border-gray-300">
