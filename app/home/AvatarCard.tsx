@@ -35,7 +35,6 @@ const AvatarCard: React.FC<IAvatarCardProps> = ({ avatar }) => {
     svgClone.style.height = "500px";
 
     document.body.appendChild(svgClone);
-    svgClone.style.display = "none";
 
     try {
       const pngDataUrl = await toPng(svgClone, {
